@@ -84,7 +84,7 @@
               color:"#007dc5",
               animation: false,
               type: this.settings.graphType,//'line',
-              name: this.settings.type,//'Data',
+              name: this.settings.dataType,//'Data',
               data: values,//[null,3.66,22.98,55.06,16.65,23.39,11.72,5.59,11.76,41.8,10.56,41.32,23.78,2.73,12.37,70.86,0.08,20.18,92.25,7.84,73.25,20.14,48.14,95.83,103.06,0.01,null],
               marker: {
                   radius: 4
@@ -139,12 +139,14 @@
                   labels:{
                     style: {
                       fontSize: "18px"
-                    }
+                    },
+                    format: "{value} "+this.settings.unit
                   },
                   title:{
                     style:{
                       fontSize: "18px"
-                    }
+                    },
+                    text: this.settings.dataType
                   }
               },
               title: {

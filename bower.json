@@ -3,6 +3,7 @@
   "version": "v1",
   "dependancies": {
     "highcharts":"https://github.com/highslide-software/highcharts-release.git#v4.0.4",
-    "jquery": "1.11.1"
+    "jquery": "1.11.1",
+    "moment": "2.8.3"
   }
 }
