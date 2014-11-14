@@ -62,6 +62,7 @@
 
         },
         makeGraph: function () {
+          var self = this;
           var el = $(this.element)
           var keys = [];
           var values = [];
@@ -158,7 +159,16 @@
               },
               tooltip: {
                   enabled: this.settings.graphType == 'line',
-                  valueSuffix: this.settings.unit//'Mb'
+                  style:{
+                    fontSize:"15px",
+                    fontWeight:"bold",
+
+                  },
+                  headerFormat:"",
+                  useHTML:true,
+                  formatter:function(){
+                    return "<center style='padding:0 20px'><strong style='font-size:18px'>"+this.y+(self.settings.unit=="MB"?"MB":(" "+self.settings.unit))+"</strong><br/>"+"<span style='color:#b7b7b7'>"+this.x+"</span></center>"
+                  }
               },
               navigation: {
                   buttonOptions: {
