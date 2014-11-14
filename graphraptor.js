@@ -80,6 +80,11 @@
           keys = [''].concat(keys);
           values = [null].concat(values).concat([null]);
 
+          var lastDay = values.length-1;
+          while(!values[lastDay]){
+            lastDay--;
+          }
+
           var averageLine = []
           if(this.settings.showAverage){
             averageLine.push({
@@ -101,6 +106,13 @@
                 enabled: false
               },
               xAxis: {
+                  plotLines: this.settings.graphType =='line' ? [{
+                    color:"#00a7e5",
+                    dashStyle: "LongDash",
+                    value:lastDay,
+                    width:2
+                  }] : [],
+                  tickWidth: 0,
                   tickmarkPlacement: 'on',
                   min:1,
                   max:values.length-2,
@@ -108,7 +120,8 @@
                     overflow:'justify',
                     maxStaggerLines: 1,
                     style: {
-                      fontSize: "15px"
+                      fontSize: "15px",
+                      fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif'
                     }
                   },
                   categories: keys//['',"1/10/2014", "2/10/2014", "3/10/2014", "4/10/2014", "5/10/2014", "6/10/2014", "7/10/2014", "8/10/2014", "9/10/2014", "10/10/2014", "11/10/2014", "12/10/2014", "13/10/2014", "14/10/2014", "15/10/2014", "16/10/2014", "19/10/2014", "21/10/2014", "23/10/2014", "24/10/2014", "25/10/2014", "26/10/2014", "27/10/2014", "30/10/2014", "31/10/2014"]
@@ -120,11 +133,13 @@
                     color:"black",
                     value:0,
                     width:2
-                  }].concat(averageLine),
+                  }].concat(this.settings.graphType =='line' ? averageLine : []),
                   min: 0,
                   labels:{
+                    enabled: this.settings.graphType == 'line',
                     style: {
-                      fontSize: "15px"
+                      fontSize: "15px",
+                      fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif'
                     },
                     format: "{value}"+(this.settings.unit=="MB"?"MB":(" "+this.settings.unit))
                   },
@@ -142,6 +157,7 @@
                   enabled: false
               },
               tooltip: {
+                  enabled: this.settings.graphType == 'line',
                   valueSuffix: this.settings.unit//'Mb'
               },
               navigation: {
@@ -150,6 +166,8 @@
                   }
               },
               series: [{
+                  pointPadding: 0,
+                  groupPadding: 0.1,
                   color:"#007dc5",
                   animation: false,
                   type: this.settings.graphType,//'line',
@@ -160,31 +178,11 @@
                   }
               }]
           });
-          var create_graph_ticks = function(){
-            var labels = el.find('.highcharts-xaxis-labels text[y!=-9999]');
-            var ticks = el.find('.highcharts-axis').first().find('path');
-
-            ticks.css('display','block');
-
-            var good = [];
-            labels.each(function(){
-              var label = $(this);
-              var x = label.position().left+label.width()/2;
-              ticks.each(function(){
-                var tick = $(this);
-                var l = tick.position().left
-                if(l > x-3 && l < x+3){
-                  good.push(tick);
-                }
-              });
-            });
-            ticks.css('display','none');
-            $.each(good,function(i,t){
-              $(t).css('display','block');
-            });
-          }
-          create_graph_ticks()
-          $(window).resize(create_graph_ticks);
+          var labels = el.find('.highcharts-xaxis-labels text[y!=-9999]');
+          labels.css('display','none');
+          labels.first().css('display','block');
+          labels.last().css('display','block');
+          $(labels[Math.floor(labels.length/2)]).css('display','block');
         }
     });
 
