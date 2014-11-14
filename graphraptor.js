@@ -1,48 +1,48 @@
 ;(function ( $, window, document, undefined ) {
 
-		// undefined is used here as the undefined global variable in ECMAScript 3 is
-		// mutable (ie. it can be changed by someone else). undefined isn't really being
-		// passed in so we can ensure the value of it is truly undefined. In ES5, undefined
-		// can no longer be modified.
+    // undefined is used here as the undefined global variable in ECMAScript 3 is
+    // mutable (ie. it can be changed by someone else). undefined isn't really being
+    // passed in so we can ensure the value of it is truly undefined. In ES5, undefined
+    // can no longer be modified.
 
-		// window and document are passed through as local variable rather than global
-		// as this (slightly) quickens the resolution process and can be more efficiently
-		// minified (especially when both are regularly referenced in your plugin).
+    // window and document are passed through as local variable rather than global
+    // as this (slightly) quickens the resolution process and can be more efficiently
+    // minified (especially when both are regularly referenced in your plugin).
 
-		// Create the defaults once
-		var pluginName = "graph",
-				defaults = {
-  				data: {},
+    // Create the defaults once
+    var pluginName = "graph",
+        defaults = {
+          data: {},
           url: null,
           showAverage: false,
           title: "",
           unit: "",
           dataType: "",
           graphType: "line"
-    		};
+        };
 
-		// The actual plugin constructor
-		function Plugin ( element, options ) {
-				this.element = element;
-				// jQuery has an extend method which merges the contents of two or
-				// more objects, storing the result in the first object. The first object
-				// is generally empty as we don't want to alter the default options for
-				// future instances of the plugin
-				this.settings = $.extend( {}, defaults, options, $(element).data() );
-				this._defaults = defaults;
-				this._name = pluginName;
-				this.init();
-		}
+    // The actual plugin constructor
+    function Plugin ( element, options ) {
+        this.element = element;
+        // jQuery has an extend method which merges the contents of two or
+        // more objects, storing the result in the first object. The first object
+        // is generally empty as we don't want to alter the default options for
+        // future instances of the plugin
+        this.settings = $.extend( {}, defaults, options, $(element).data() );
+        this._defaults = defaults;
+        this._name = pluginName;
+        this.init();
+    }
 
-		// Avoid Plugin.prototype conflicts
-		$.extend(Plugin.prototype, {
-				init: function () {
-						// Place initialization logic here
-						// You already have access to the DOM element and
-						// the options via the instance, e.g. this.element
-						// and this.settings
-						// you can add more functions like the one below and
-						// call them like so: this.yourOtherFunction(this.element, this.settings).
+    // Avoid Plugin.prototype conflicts
+    $.extend(Plugin.prototype, {
+        init: function () {
+            // Place initialization logic here
+            // You already have access to the DOM element and
+            // the options via the instance, e.g. this.element
+            // and this.settings
+            // you can add more functions like the one below and
+            // call them like so: this.yourOtherFunction(this.element, this.settings).
 
             if(this.settings.url){
               var self = this;
@@ -60,12 +60,12 @@
             }
 
 
-				},
-				makeGraph: function () {
+        },
+        makeGraph: function () {
           var el = $(this.element)
-					var keys = [];
+          var keys = [];
           var values = [];
-          var average = 0;
+          var average = 100;
           $.each(this.settings.data,function(key,value){
             keys.push(key);
             values.push(value);
@@ -81,6 +81,7 @@
           }
 
           var lines = [{
+              color:"#007dc5",
               animation: false,
               type: this.settings.graphType,//'line',
               name: this.settings.type,//'Data',
@@ -92,6 +93,8 @@
 
           if(this.settings.showAverage){
             lines.push({
+                color:"#b7b7b7",
+                dashStyle: "LongDash",
                 animation: false,
                 type: 'line',
                 name: 'Regression Line',
@@ -108,6 +111,12 @@
             })
           };
 
+          Highcharts.setOptions({
+              chart: {
+                  backgroundColor: "#F9F9F9"
+              }
+          });
+
           el.highcharts({
               credits: {
                 enabled: false
@@ -118,15 +127,28 @@
                   max:values.length-2,
                   labels: {
                     overflow:'justify',
-                    maxStaggerLines: 1
+                    maxStaggerLines: 1,
+                    style: {
+                      fontSize: "18px"
+                    }
                   },
                   categories: keys//['',"1/10/2014", "2/10/2014", "3/10/2014", "4/10/2014", "5/10/2014", "6/10/2014", "7/10/2014", "8/10/2014", "9/10/2014", "10/10/2014", "11/10/2014", "12/10/2014", "13/10/2014", "14/10/2014", "15/10/2014", "16/10/2014", "19/10/2014", "21/10/2014", "23/10/2014", "24/10/2014", "25/10/2014", "26/10/2014", "27/10/2014", "30/10/2014", "31/10/2014"]
               },
               yAxis: {
-                  min: 0
+                  min: 0,
+                  labels:{
+                    style: {
+                      fontSize: "18px"
+                    }
+                  },
+                  title:{
+                    style:{
+                      fontSize: "18px"
+                    }
+                  }
               },
               title: {
-                  text: this.settings.title//'Such MBs'
+                  text: ""//this.settings.title//'Such MBs'
               },
               legend: {
                   enabled: false
@@ -166,20 +188,20 @@
           }
           create_graph_ticks()
           $(window).resize(create_graph_ticks);
-				}
-		});
+        }
+    });
 
-		// A really lightweight plugin wrapper around the constructor,
-		// preventing against multiple instantiations
-		$.fn[ pluginName ] = function ( options ) {
-				this.each(function() {
-						if ( !$.data( this, "plugin_" + pluginName ) ) {
-								$.data( this, "plugin_" + pluginName, new Plugin( this, options ) );
-						}
-				});
+    // A really lightweight plugin wrapper around the constructor,
+    // preventing against multiple instantiations
+    $.fn[ pluginName ] = function ( options ) {
+        this.each(function() {
+            if ( !$.data( this, "plugin_" + pluginName ) ) {
+                $.data( this, "plugin_" + pluginName, new Plugin( this, options ) );
+            }
+        });
 
-				// chain jQuery functions
-				return this;
-		};
+        // chain jQuery functions
+        return this;
+    };
 
 })( jQuery, window, document );
