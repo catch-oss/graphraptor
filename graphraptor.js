@@ -65,51 +65,30 @@
           var el = $(this.element)
           var keys = [];
           var values = [];
-          var average = 100;
+          var average = 0;
           $.each(this.settings.data,function(key,value){
             keys.push(key);
             values.push(value);
             average += value;
           });
+
+          keys = $.map(keys,function(key){
+            return moment(key).format('D\xA0MMM')
+          })
+
           average = average/keys.length;
           keys = [''].concat(keys);
           values = [null].concat(values).concat([null]);
 
           var averageLine = []
-          for(var i = 0;i<values.length+2;i++){
-            averageLine.push(average)
-          }
-
-          var lines = [{
-              color:"#007dc5",
-              animation: false,
-              type: this.settings.graphType,//'line',
-              name: this.settings.dataType,//'Data',
-              data: values,//[null,3.66,22.98,55.06,16.65,23.39,11.72,5.59,11.76,41.8,10.56,41.32,23.78,2.73,12.37,70.86,0.08,20.18,92.25,7.84,73.25,20.14,48.14,95.83,103.06,0.01,null],
-              marker: {
-                  radius: 4
-              }
-          }];
-
           if(this.settings.showAverage){
-            lines.push({
-                color:"#b7b7b7",
-                dashStyle: "LongDash",
-                animation: false,
-                type: 'line',
-                name: 'Regression Line',
-                data: averageLine,
-                marker: {
-                    enabled: false
-                },
-                states: {
-                    hover: {
-                        lineWidth: 0
-                    }
-                },
-                enableMouseTracking: false
-            })
-          };
+            averageLine.push({
+              color:"#b7b7b7",
+              dashStyle: "LongDash",
+              value:average,
+              width:2
+            });
+          }
 
           Highcharts.setOptions({
               chart: {
@@ -129,24 +108,31 @@
                     overflow:'justify',
                     maxStaggerLines: 1,
                     style: {
-                      fontSize: "18px"
+                      fontSize: "15px"
                     }
                   },
                   categories: keys//['',"1/10/2014", "2/10/2014", "3/10/2014", "4/10/2014", "5/10/2014", "6/10/2014", "7/10/2014", "8/10/2014", "9/10/2014", "10/10/2014", "11/10/2014", "12/10/2014", "13/10/2014", "14/10/2014", "15/10/2014", "16/10/2014", "19/10/2014", "21/10/2014", "23/10/2014", "24/10/2014", "25/10/2014", "26/10/2014", "27/10/2014", "30/10/2014", "31/10/2014"]
               },
               yAxis: {
+                  gridLineWidth: 0,
+                  minorGridLineWidth: 0,
+                  plotLines: [{
+                    color:"black",
+                    value:0,
+                    width:2
+                  }].concat(averageLine),
                   min: 0,
                   labels:{
                     style: {
-                      fontSize: "18px"
+                      fontSize: "15px"
                     },
-                    format: "{value} "+this.settings.unit
+                    format: "{value}"+(this.settings.unit=="MB"?"MB":(" "+this.settings.unit))
                   },
                   title:{
                     style:{
                       fontSize: "18px"
                     },
-                    text: this.settings.dataType
+                    text: ''//this.settings.dataType
                   }
               },
               title: {
@@ -163,7 +149,16 @@
                       enabled: false
                   }
               },
-              series: lines
+              series: [{
+                  color:"#007dc5",
+                  animation: false,
+                  type: this.settings.graphType,//'line',
+                  name: this.settings.dataType,//'Data',
+                  data: values,//[null,3.66,22.98,55.06,16.65,23.39,11.72,5.59,11.76,41.8,10.56,41.32,23.78,2.73,12.37,70.86,0.08,20.18,92.25,7.84,73.25,20.14,48.14,95.83,103.06,0.01,null],
+                  marker: {
+                      radius: 4
+                  }
+              }]
           });
           var create_graph_ticks = function(){
             var labels = el.find('.highcharts-xaxis-labels text[y!=-9999]');
