@@ -8,6 +8,13 @@
     // window and document are passed through as local variable rather than global
     // as this (slightly) quickens the resolution process and can be more efficiently
     // minified (especially when both are regularly referenced in your plugin).
+    var threeLabels = function(elem){
+      var labels = $(elem).find('.highcharts-xaxis-labels text[y!=-9999]');
+      labels.css('display','none');
+      labels.first().css('display','block');
+      labels.last().css('display','block');
+      $(labels[Math.floor(labels.length/2)]).css('display','block');
+    }
 
     // Create the defaults once
     var pluginName = "graph",
@@ -109,11 +116,7 @@
               chart: {
                 events: {
                   redraw: function(){
-                    var labels = $(this.container).find('.highcharts-xaxis-labels text[y!=-9999]');
-                    labels.css('display','none');
-                    labels.first().css('display','block');
-                    labels.last().css('display','block');
-                    $(labels[Math.floor(labels.length/2)]).css('display','block');
+                    threeLabels(this.container);
                   }
                 }
               },
@@ -199,11 +202,7 @@
                   }
               }]
           });
-          var labels = el.find('.highcharts-xaxis-labels text[y!=-9999]');
-          labels.css('display','none');
-          labels.first().css('display','block');
-          labels.last().css('display','block');
-          $(labels[Math.floor(labels.length/2)]).css('display','block');
+          threeLabels(el);
         }
     });
 
