@@ -106,6 +106,17 @@
               credits: {
                 enabled: false
               },
+              chart: {
+                events: {
+                  redraw: function(){
+                    var labels = $(this.container).find('.highcharts-xaxis-labels text[y!=-9999]');
+                    labels.css('display','none');
+                    labels.first().css('display','block');
+                    labels.last().css('display','block');
+                    $(labels[Math.floor(labels.length/2)]).css('display','block');
+                  }
+                }
+              },
               xAxis: {
                   plotLines: this.settings.graphType =='line' ? [{
                     color:"#00a7e5",
