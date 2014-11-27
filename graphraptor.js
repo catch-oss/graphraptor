@@ -11,9 +11,11 @@
     var threeLabels = function(elem){
       var labels = $(elem).find('.highcharts-xaxis-labels text[y!=-9999]');
       labels.css('display','none');
-      labels.first().css('display','block');
-      labels.last().css('display','block');
-      $(labels[Math.floor(labels.length/2)]).css('display','block');
+      if(!$(elem).data('noLabels')){
+          labels.first().css('display','block');
+          labels.last().css('display','block');
+          $(labels[Math.floor(labels.length/2)]).css('display','block');
+      }
     }
 
     // Create the defaults once
@@ -202,6 +204,7 @@
                   }
               }]
           });
+          el.find('.highcharts-container').data('noLabels',el.data('noLabels'));
           threeLabels(el);
         }
     });
