@@ -107,7 +107,7 @@
 
           Highcharts.setOptions({
               chart: {
-                  backgroundColor: "#F9F9F9"
+                  backgroundColor: el.data('background') || "#F9F9F9"
               }
           });
 
