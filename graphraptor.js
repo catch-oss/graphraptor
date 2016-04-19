@@ -58,6 +58,13 @@
             keys = [''].concat(keys);
             values = [null].concat(values).concat([null]);
 
+            //If there was no values to start with, the length will now be
+            // 2. There is no data to display, so we must return to Avoid
+            // the while loop being infinate
+            if(values.length == 2){
+                return;
+            }
+
             var lastDay = values.length-1;
             while(!values[lastDay]){
                 lastDay--;
