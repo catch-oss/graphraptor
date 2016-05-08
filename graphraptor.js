@@ -66,7 +66,7 @@
             }
 
             var lastDay = values.length-1;
-            while([null, undefined].indexOf(values[lastDay]) != -1){
+            while(lastDay > 0 && [null, undefined].indexOf(values[lastDay]) != -1){
                 lastDay--;
             }
 
