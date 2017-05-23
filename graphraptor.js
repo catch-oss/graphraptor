@@ -1,4 +1,30 @@
-;(function ( $, window, document, undefined ) {
+;(function (root, factory) {
+
+    // AMD. Register as an anonymous module depending on jQuery.
+    if (typeof define === 'function' && define.amd)
+        define(
+            [
+                'jquery',
+                '../../highcharts/highcharts'
+            ],
+            factory
+        );
+
+    // Node, CommonJS-like
+    else if (typeof exports === 'object')
+        module.exports = factory(
+            require('jquery'),
+            require('../../highcharts/highcharts')
+        );
+
+    // Browser globals (root is window)
+    else {
+        root.graphraptor = factory(
+            root.jQuery
+        );
+    }
+
+}(this, function($, highchartsDummy, undefined) {
 
     var threeLabels = function(elem){
         var labels = $(elem).find('.highcharts-xaxis-labels text[y!=-9999]');
@@ -58,8 +84,15 @@
             keys = [''].concat(keys);
             values = [null].concat(values).concat([null]);
 
+            //If there was no values to start with, the length will now be
+            // 2. There is no data to display, so we must return to Avoid
+            // the while loop being infinate
+            if(values.length == 2){
+                return;
+            }
+
             var lastDay = values.length-1;
-            while(!values[lastDay]){
+            while(lastDay > 0 && [null, undefined].indexOf(values[lastDay]) != -1){
                 lastDay--;
             }
 
@@ -216,4 +249,4 @@
         return this;
     };
 
-})( jQuery, window, document );
+}));
