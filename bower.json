@@ -1,12 +1,12 @@
 {
     "name": "graphraptor",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "license": "UNLICENSED",
     "private": true,
     "ignore": [],
     "main": "graphraptor.js",
     "dependencies": {
-        "highcharts": "https://github.com/highcharts/highcharts-dist#~5",
+        "highcharts": "https://github.com/highcharts/highcharts-dist.git#~5",
         "jquery": "~1",
         "moment": "2.8.3"
     }
