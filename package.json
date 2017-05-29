@@ -1,12 +1,12 @@
 {
     "author": "Sam Etheridge <sam@catch.co.nz>",
     "name": "graphraptor",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "license": "UNLICENSED",
     "private": true,
     "repository": "git@gl.catch.co.nz:catch/graphraptor.git",
     "dependencies": {
-        "highcharts":"https://github.com/highslide-software/highcharts-release.git#v4.0.4",
+        "highcharts": "https://github.com/highcharts/highcharts-dist#~5",
         "jquery": "~1",
         "moment": "2.8.3"
     },
