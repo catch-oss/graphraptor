@@ -5,7 +5,7 @@
         define(
             [
                 'jquery',
-                '../../highcharts/highcharts'
+                '../highcharts/highcharts'
             ],
             factory
         );
@@ -14,17 +14,18 @@
     else if (typeof exports === 'object')
         module.exports = factory(
             require('jquery'),
-            require('../../highcharts/highcharts')
+            require('../highcharts/highcharts')
         );
 
     // Browser globals (root is window)
     else {
         root.graphraptor = factory(
-            root.jQuery
+            root.jQuery,
+            root.Highcharts
         );
     }
 
-}(this, function($, highchartsDummy, undefined) {
+}(this, function($, Highcharts, undefined) {
 
     var threeLabels = function(elem){
         var labels = $(elem).find('.highcharts-xaxis-labels text[y!=-9999]');
