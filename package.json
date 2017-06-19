@@ -1,7 +1,7 @@
 {
     "author": "Sam Etheridge <sam@catch.co.nz>",
     "name": "graphraptor",
-    "version": "1.2.0",
+    "version": "1.2.14",
     "license": "UNLICENSED",
     "private": true,
     "repository": "git@gl.catch.co.nz:catch/graphraptor.git",
