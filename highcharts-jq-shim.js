@@ -15,5 +15,5 @@
 
 }(this, function ($, undefined) {
 
-    root.jQuery = $;
-}))
+    window.jQuery = $;
+}));
